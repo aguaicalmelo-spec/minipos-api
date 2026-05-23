@@ -1,0 +1,91 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Customer {
+  id        Int      @id @default(autoincrement())
+  fullName  String
+  email     String   @unique
+  phone     String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model PanCoco {
+  id          Int      @id @default(autoincrement())
+  fullName    String
+  descripcion String
+  precio      Float
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+}
+
+model Student {
+  id          Int             @id @default(autoincrement())
+  fullName    String
+  email       String          @unique
+  createdAt   DateTime        @default(now())
+  enrollments Enrollment[]
+  Profile     StudentProfile?
+}
+
+model StudentProfile {
+  id        Int     @id @default(autoincrement())
+  studentId Int     @unique
+  phone     String?
+  Address   String?
+  Student   Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+}
+
+model Department {
+  id      Int      @id @default(autoincrement())
+  name    String   @unique
+  courses Course[]
+}
+
+model Course {
+  id           Int          @id @default(autoincrement())
+  code         String       @unique
+  title        String
+  departmentId Int
+  department   Department   @relation(fields: [departmentId], references: [id])
+  enrollments  Enrollment[]
+  tags         Tag[]        @relation("CourseToTag")
+}
+
+model Tag {
+  id      Int      @id @default(autoincrement())
+  name    String   @unique
+  courses Course[] @relation("CourseToTag")
+}
+
+model Enrollment {
+  id         Int              @id @default(autoincrement())
+  studentId  Int
+  courseId   Int
+  status     EnrollmentStatus @default(ACTIVE)
+  enrolledAt DateTime         @default(now())
+  course     Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  student    Student          @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, courseId])
+  @@index([courseId])
+}
+
+enum EnrollmentStatus {
+  ACTIVE
+  DROPPED
+  COMPLETED
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  email String @unique
+  password String
+  fullName String
+  createdAt DateTime @default(now())
+}
