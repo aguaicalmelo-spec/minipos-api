@@ -36,16 +36,12 @@ export class PanCocoService {
         return found;
     }
 
-    async update(id: number, UpdatePanCocoDto: UpdatePanCocoDto) {
+    async update(id: number, dto: UpdatePanCocoDto) {
         await this.findOne(id);
 
         return this.prisma.panCoco.update({
             where: { id },
-            data: {
-                fullName: UpdatePanCocoDto.fullName,
-                descripcion: UpdatePanCocoDto.descripcion,
-                precio: Number(UpdatePanCocoDto.precio),
-            },
+            data: dto
         });
     }
 

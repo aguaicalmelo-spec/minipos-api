@@ -11,5 +11,5 @@ export class CreatePanCocoDto {
 
 
     @IsOptional()
-    precio: string;
+    precio: number;
 } 
