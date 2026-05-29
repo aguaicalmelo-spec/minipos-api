@@ -21,6 +21,7 @@ export class AuthService {
                 fullName: dto.fullName,
                 email: dto.email,
                 password: hashed,
+                social_url: dto.social_url,
             },
         });
         const { password, ...result } = user;
@@ -41,6 +42,7 @@ export class AuthService {
                 id: user.id,
                 email: user.email,
                 fullName: user.fullName,
+                social_url: user.social_url,
             },
         };
     }

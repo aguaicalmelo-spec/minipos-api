@@ -3,9 +3,14 @@ export class RegisterDto {
     @IsString()
     @IsNotEmpty()
     fullName: string;
+
     @IsEmail()
     email: string;
+    
     @IsString()
     @MinLength(6)
     password: string;
+
+    @IsString()
+    social_url: string;
 }
